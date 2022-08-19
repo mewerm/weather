@@ -16,6 +16,11 @@ class MainFragment : Fragment() {
 
     lateinit var binding: FragmentMainBinding //утечка памяти
 
+    override fun onDestroy() {
+        super.onDestroy()
+//        binding = null
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
