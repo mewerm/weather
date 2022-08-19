@@ -3,20 +3,23 @@ package com.maximmesh.weathergeekbrainsapp.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.lang.Thread.sleep
+import com.maximmesh.weathergeekbrainsapp.repository.RepositoryImpl
 
-class MainViewModel(private val liveData:MutableLiveData<AppState> = MutableLiveData()): ViewModel() { //Android для контекста
-    fun getData(): LiveData<AppState>{
+class MainViewModel(
+    private val liveData: MutableLiveData<AppState> = MutableLiveData(),
+    private val repository: RepositoryImpl = RepositoryImpl()
+) :
+    ViewModel() {
+    fun getData(): LiveData<AppState> {
         return liveData
     }
 
-    fun getWeather(){
-        Thread{
+    fun getWeather() {
+        Thread {
             liveData.postValue(AppState.Loading)
-            sleep(2000L)
-            if((0..10).random()>5){
-                    liveData.postValue(AppState.Success(Any()))
-                }else{
+            if ((0..10).random() > 5) {
+                liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
+            } else {
                 liveData.postValue(AppState.Error(IllegalAccessError("ОШИБКА НЕУСПЕШНОЙ НЕУДАЧНОСТИ")))
             }
         }.start()
