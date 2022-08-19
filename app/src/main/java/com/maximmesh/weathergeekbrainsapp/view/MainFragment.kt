@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.maximmesh.weathergeekbrainsapp.R
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentMainBinding
+import com.maximmesh.weathergeekbrainsapp.viewmodel.AppState
 import com.maximmesh.weathergeekbrainsapp.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
@@ -25,19 +25,17 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        binding = FragmentMainBinding.inflate(inflater,container,false)
-        binding.btnOne.setOnClickListener{}
+        binding = FragmentMainBinding.inflate(inflater, container, false)
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java )
+        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val observer = object: Observer<Any> {
-            override fun onChanged(data: Any) {
+        val observer = object : Observer<AppState> {
+            override fun onChanged(data: AppState) {
 
                 renderData(data)
             }
@@ -47,8 +45,22 @@ class MainFragment : Fragment() {
         viewModel.getWeather()
     }
 
-    private fun renderData(data:Any){
-        Toast.makeText(requireContext(), "Работает", Toast.LENGTH_SHORT).show()
+    private fun renderData(data: AppState) {
+        when (data){
+            is AppState.Error -> {
+                binding.loadingLayout.visibility = View.GONE
+                binding.message.text = "Не получилось ${data.error}"
+            }
+            is AppState.Loading -> {
+                binding.loadingLayout.visibility = View.VISIBLE
+
+            }
+            is AppState.Success -> {
+                binding.loadingLayout.visibility = View.GONE
+                binding.message.text = "Получилось"
+            }
+
+        }
 
     }
 
