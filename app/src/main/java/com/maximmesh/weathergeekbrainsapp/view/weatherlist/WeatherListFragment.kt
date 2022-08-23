@@ -11,10 +11,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.maximmesh.weathergeekbrainsapp.R
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentWeatherListBinding
+import com.maximmesh.weathergeekbrainsapp.repository.Weather
+import com.maximmesh.weathergeekbrainsapp.utils.KEY_BUNDLE_WEATHER
+import com.maximmesh.weathergeekbrainsapp.view.details.DetailsFragment
 import com.maximmesh.weathergeekbrainsapp.viewmodel.AppState
 import com.maximmesh.weathergeekbrainsapp.viewmodel.MainViewModel
 
-class WeatherListFragment : Fragment() {
+class WeatherListFragment : Fragment(), OnItemListClickListener {
 
     //создаем две ссылки binding на один объект: _binding(Null) binding(notNull): чтобы небыло утечки памяти
     private var _binding: FragmentWeatherListBinding? = null //переменная _binding которая может быть null
@@ -24,7 +27,7 @@ class WeatherListFragment : Fragment() {
             return _binding!! //точно не null
         }
 
-    val adapter = WeatherListAdapter()
+    private val adapter = WeatherListAdapter(this)
 
     override fun onDestroy() {
         super.onDestroy()
@@ -89,13 +92,6 @@ class WeatherListFragment : Fragment() {
             is AppState.Success -> {
                 binding.loadingLayout.visibility = View.GONE
                 adapter.setData(data.weatherList)
-
-                /* binding.cityName.text = data.weatherData.city.name
-                 binding.cityCoordinates.text = "${data.weatherData.city.lat} ${data.weatherData.city.lon}"
-                 binding.temperatureValue.text = data.weatherData.temperature.toString()
-                 binding.feelsLikeValue.text = data.weatherData.feelsLike.toString()
-                 Snackbar.make(binding.mainView, "Получилось", Snackbar.LENGTH_LONG).show()
- */
             }
 
         }
@@ -106,4 +102,16 @@ class WeatherListFragment : Fragment() {
         @JvmStatic
         fun newInstance() = WeatherListFragment()
     }
+
+    override fun onItemClick(weather: Weather) {
+        val bundle = Bundle()
+        bundle.putParcelable(KEY_BUNDLE_WEATHER, weather)
+        requireActivity().supportFragmentManager.beginTransaction().add(
+            R.id.container,
+            DetailsFragment.newInstance(bundle)
+        ).addToBackStack("").commit()
+    }
 }
+
+
+

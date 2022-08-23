@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentDetailsBinding
+import com.maximmesh.weathergeekbrainsapp.repository.Weather
+import com.maximmesh.weathergeekbrainsapp.utils.KEY_BUNDLE_WEATHER
 
 class DetailsFragment : Fragment() {
 
@@ -33,38 +35,27 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-    }
-
-/*
-    private fun renderData(data: AppState) {
-        when (data) {
-            is AppState.Error -> {
-                binding.loadingLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView, "Не получилось ${data.error}", Snackbar.LENGTH_LONG).show()
-            }
-            is AppState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
-
-            }
-            is AppState.Success -> {
-                binding.loadingLayout.visibility = View.GONE
-                binding.cityName.text = data.weatherData.city.name
-                binding.cityCoordinates.text = "${data.weatherData.city.lat} ${data.weatherData.city.lon}"
-                binding.temperatureValue.text = data.weatherData.temperature.toString()
-                binding.feelsLikeValue.text = data.weatherData.feelsLike.toString()
-                Snackbar.make(binding.mainView, "Получилось", Snackbar.LENGTH_LONG).show()
-
-            }
-
-        }
+        val weather: Weather = requireArguments().getParcelable<Weather>(KEY_BUNDLE_WEATHER)!!
+        renderData(weather)
 
     }
-*/
+
+    private fun renderData(weather: Weather) {
+        binding.loadingLayout.visibility = View.GONE
+        binding.cityName.text = weather.city.name
+        binding.temperatureValue.text = weather.temperature.toString()
+        binding.feelsLikeValue.text = weather.feelsLike.toString()
+        binding.cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
+
+    }
 
     companion object {
         @JvmStatic
-        fun newInstance() = DetailsFragment()
+        fun newInstance(bundle: Bundle): DetailsFragment {
+            val fragment = DetailsFragment()
+            fragment.arguments = bundle
+            return fragment
+
+        }
     }
 }

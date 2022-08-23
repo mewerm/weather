@@ -7,15 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentWeatherListRecyclerItemBinding
 import com.maximmesh.weathergeekbrainsapp.repository.Weather
 
-class WeatherListAdapter(private var data:List<Weather> = listOf()): RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
+class WeatherListAdapter(private val onItemListClickListener: OnItemListClickListener
+,private var data:List<Weather> = listOf()):
+ RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
 
-    fun setData(dataNew: List<Weather>){
+    fun setData(dataNew: List<Weather>) {
         this.data = dataNew
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityHolder {
-        val binding = FragmentWeatherListRecyclerItemBinding.inflate(LayoutInflater.from(parent.context),parent,false )
+        val binding = FragmentWeatherListRecyclerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CityHolder(binding.root)
     }
 
@@ -27,10 +29,13 @@ class WeatherListAdapter(private var data:List<Weather> = listOf()): RecyclerVie
         return data.size
     }
 
-    class CityHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        fun bind(weather: Weather){
+   inner class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(weather: Weather) {
             val binding = FragmentWeatherListRecyclerItemBinding.bind(itemView)
             binding.tvCityName.text = weather.city.name
+            binding.root.setOnClickListener {
+                onItemListClickListener.onItemClick(weather)
+            }
         }
     }
 }

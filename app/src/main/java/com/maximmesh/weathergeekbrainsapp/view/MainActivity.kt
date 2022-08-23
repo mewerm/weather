@@ -1,7 +1,7 @@
 package com.maximmesh.weathergeekbrainsapp.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.maximmesh.weathergeekbrainsapp.R
 import com.maximmesh.weathergeekbrainsapp.view.weatherlist.WeatherListFragment
 
