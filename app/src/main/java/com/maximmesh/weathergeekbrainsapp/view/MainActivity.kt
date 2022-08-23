@@ -3,6 +3,7 @@ package com.maximmesh.weathergeekbrainsapp.view
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.maximmesh.weathergeekbrainsapp.R
+import com.maximmesh.weathergeekbrainsapp.view.weatherlist.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         if(savedInstanceState == null){
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container, WeatherListFragment.newInstance())
                 .commit()
         }
     }

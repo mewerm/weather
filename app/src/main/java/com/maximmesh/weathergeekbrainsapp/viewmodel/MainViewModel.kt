@@ -14,15 +14,18 @@ class MainViewModel(
         return liveData
     }
 
-    fun getWeather() {
+    fun getWeatherRussia() = getWeather(true)
+    fun getWeatherWorld() = getWeather(false)
+
+   private fun getWeather(isRussian:Boolean) {
         Thread {
             liveData.postValue(AppState.Loading)
-            if ((0..10).random() > 5) {
-                liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
+            if (true) {
+                val answer = if(!isRussian) repository.getWorldWeatherFromLocalStorage() else repository.getRussianWeatherFromLocalStorage()
+                liveData.postValue(AppState.Success(answer))
             } else {
                 liveData.postValue(AppState.Error(IllegalAccessError("ОШИБКА НЕУСПЕШНОЙ НЕУДАЧНОСТИ")))
             }
         }.start()
     }
-
 }

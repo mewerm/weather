@@ -1,50 +1,43 @@
-package com.maximmesh.weathergeekbrainsapp.view
+package com.maximmesh.weathergeekbrainsapp.view.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
-import com.maximmesh.weathergeekbrainsapp.databinding.FragmentMainBinding
-import com.maximmesh.weathergeekbrainsapp.viewmodel.AppState
-import com.maximmesh.weathergeekbrainsapp.viewmodel.MainViewModel
+import com.maximmesh.weathergeekbrainsapp.databinding.FragmentDetailsBinding
 
-class MainFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
-    lateinit var binding: FragmentMainBinding //утечка памяти
+    //создаем две ссылки binding на один объект: _binding(Null) binding(notNull): чтобы небыло утечки памяти
+    private var _binding: FragmentDetailsBinding? = null //переменная _binding которая может быть null
+
+    private val binding: FragmentDetailsBinding
+        get() {
+            return _binding!! //точно не null
+        }
 
     override fun onDestroy() {
         super.onDestroy()
-//        binding = null
+        _binding = null //переменная _binding которая может быть null ее можно занулить, ее необходимо занулить
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
 
-        return binding.root
+        return binding.root //а тут binding возвращается NotNull и ниже используется NotNull binding
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val observer = object : Observer<AppState> {
-            override fun onChanged(data: AppState) {
 
-                renderData(data)
-            }
-        }
-        viewModel.getData().observe(viewLifecycleOwner, observer)
-
-        viewModel.getWeather()
     }
 
+/*
     private fun renderData(data: AppState) {
         when (data) {
             is AppState.Error -> {
@@ -68,9 +61,10 @@ class MainFragment : Fragment() {
         }
 
     }
+*/
 
     companion object {
         @JvmStatic
-        fun newInstance() = MainFragment()
+        fun newInstance() = DetailsFragment()
     }
 }
