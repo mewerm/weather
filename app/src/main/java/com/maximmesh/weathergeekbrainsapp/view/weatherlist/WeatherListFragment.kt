@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.maximmesh.weathergeekbrainsapp.R
@@ -45,12 +44,16 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
     private var isRussian = true
 
+    private val viewModel:MainViewModel by lazy{
+        ViewModelProvider (this)[MainViewModel::class.java]
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recyclerView.adapter = adapter
 
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val observer = { data: AppState -> renderData(data) }
         viewModel.getData().observe(viewLifecycleOwner, observer)
