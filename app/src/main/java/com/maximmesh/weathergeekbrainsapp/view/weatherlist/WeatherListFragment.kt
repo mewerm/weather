@@ -52,12 +52,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
         val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        val observer = object : Observer<AppState> {
-            override fun onChanged(data: AppState) {
-
-                renderData(data)
-            }
-        }
+        val observer = { data: AppState -> renderData(data) }
         viewModel.getData().observe(viewLifecycleOwner, observer)
 
         binding.floatingActionButton.setOnClickListener {
@@ -104,11 +99,11 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
     }
 
     override fun onItemClick(weather: Weather) {
-        val bundle = Bundle()
-        bundle.putParcelable(KEY_BUNDLE_WEATHER, weather)
         requireActivity().supportFragmentManager.beginTransaction().add(
             R.id.container,
-            DetailsFragment.newInstance(bundle)
+            DetailsFragment.newInstance(Bundle().apply {
+                putParcelable(KEY_BUNDLE_WEATHER, weather)
+            })
         ).addToBackStack("").commit()
     }
 }
