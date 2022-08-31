@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentDetailsBinding
 import com.maximmesh.weathergeekbrainsapp.repository.Weather
+import com.maximmesh.weathergeekbrainsapp.repository.WeatherDTO
 import com.maximmesh.weathergeekbrainsapp.utils.KEY_BUNDLE_WEATHER
 
 class DetailsFragment : Fragment() {
@@ -33,21 +34,25 @@ class DetailsFragment : Fragment() {
         return binding.root //а тут binding возвращается NotNull и ниже используется NotNull binding
     }
 
+    lateinit var localWeather:Weather
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER)?.let {
-            renderData(it)
+            localWeather = it
+           // renderData(Weather.loadWeather(it.city.lat, it.city.lon))
         }
 
     }
 
-    private fun renderData(weather: Weather) {
+
+    private fun renderData(weather: WeatherDTO) {
         with(binding){
             loadingLayout.visibility = View.GONE
-            cityName.text = weather.city.name
-            temperatureValue.text = weather.temperature.toString()
-            feelsLikeValue.text = weather.feelsLike.toString()
-            cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
+            cityName.text = localWeather.city.name
+            temperatureValue.text = weather.factDTO.temp.toString()
+            feelsLikeValue.text = weather.factDTO.feelsLike.toString()
+            cityCoordinates.text = "${weather.infoDTO.lat} ${weather.infoDTO.lon}"
         }
     }
 
