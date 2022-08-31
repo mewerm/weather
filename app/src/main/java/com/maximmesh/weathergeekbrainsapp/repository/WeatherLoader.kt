@@ -3,6 +3,7 @@ package com.maximmesh.weathergeekbrainsapp.repository
 import android.os.Looper
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.maximmesh.weathergeekbrainsapp.BuildConfig
 import com.maximmesh.weathergeekbrainsapp.repository.DTO.WeatherDTO
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -20,7 +21,7 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponse) {
             (uri.openConnection() as HttpURLConnection).apply {
                 connectTimeout = 1000
                 readTimeout = 1000
-                addRequestProperty("X-Yandex-API-Key", "99d0af67-67e1-4d17-b4a0-407002987dfc")
+                addRequestProperty("X-Yandex-API-Key", BuildConfig.WEATHER_API_KEY) //скрыл ключ
             }
 
         Thread {
