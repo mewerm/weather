@@ -1,4 +1,4 @@
-package com.maximmesh.weathergeekbrainsapp.repository
+package com.maximmesh.weathergeekbrainsapp.repository.DTO
 
 import com.google.gson.annotations.SerializedName
 
@@ -52,9 +52,4 @@ data class PartsItemDTO(
 	@field:SerializedName("part_name")
 	val partName: String,
 
-	@field:SerializedName("prec_mm")
-	val precMm: Int,
-
-	@field:SerializedName("prec_prob")
-	val precProb: Int
 )

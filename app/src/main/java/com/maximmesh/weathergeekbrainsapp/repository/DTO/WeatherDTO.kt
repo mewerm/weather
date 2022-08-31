@@ -1,4 +1,4 @@
-package com.maximmesh.weathergeekbrainsapp.repository
+package com.maximmesh.weathergeekbrainsapp.repository.DTO
 
 import com.google.gson.annotations.SerializedName
 
