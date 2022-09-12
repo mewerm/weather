@@ -1,6 +1,7 @@
 package com.maximmesh.weathergeekbrainsapp.repository
 
 import android.os.Looper
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.maximmesh.weathergeekbrainsapp.BuildConfig

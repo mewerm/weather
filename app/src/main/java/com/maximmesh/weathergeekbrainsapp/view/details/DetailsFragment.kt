@@ -68,6 +68,5 @@ class DetailsFragment : Fragment(), OnServerResponse {
 
     override fun onResponse(weatherDTO: WeatherDTO) { //отложенный вызов
         renderData(weatherDTO)
-
     }
 }
