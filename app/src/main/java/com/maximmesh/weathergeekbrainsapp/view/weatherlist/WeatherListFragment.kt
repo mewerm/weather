@@ -77,7 +77,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         viewModel.getWeatherRussia()
     }
 
-    private fun renderData(data: AppState) {
+      private fun renderData(data: AppState) {
         when (data) {
             is AppState.Error -> {
                 binding.loadingLayout.visibility = View.GONE

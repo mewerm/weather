@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentDetailsBinding
 import com.maximmesh.weathergeekbrainsapp.repository.Weather
-import com.maximmesh.weathergeekbrainsapp.repository.DTO.WeatherDTO
-import com.maximmesh.weathergeekbrainsapp.repository.OnServerResponse
-import com.maximmesh.weathergeekbrainsapp.repository.WeatherLoader
 import com.maximmesh.weathergeekbrainsapp.utils.KEY_BUNDLE_WEATHER
+import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState
+import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState.Success
+import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsViewModel
 
-class DetailsFragment : Fragment(), OnServerResponse {
+class DetailsFragment : Fragment() {
 
     //создаем две ссылки binding на один объект: _binding(Null) binding(notNull): чтобы небыло утечки памяти
     private var _binding: FragmentDetailsBinding? = null //переменная _binding которая может быть null
@@ -32,27 +33,44 @@ class DetailsFragment : Fragment(), OnServerResponse {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-
         return binding.root //а тут binding возвращается NotNull и ниже используется NotNull binding
     }
 
-    lateinit var currentCityName:String
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this).get(DetailsViewModel::class.java)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.getLiveData().observe(viewLifecycleOwner
+        ) { t -> renderData(t) }
+
         arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER)?.let {
-            currentCityName = it.city.name
-            WeatherLoader(this@DetailsFragment).loadWeather(it.city.lat, it.city.lon)
+            viewModel.getWeather(it.city)
         }
     }
 
-    private fun renderData(weather: WeatherDTO) {
-        with(binding){
-            loadingLayout.visibility = View.GONE
-            cityName.text = currentCityName
-            temperatureValue.text = weather.factDTO.temp.toString()
-            feelsLikeValue.text = weather.factDTO.feelsLike.toString()
-            cityCoordinates.text = "${weather.infoDTO.lat} ${weather.infoDTO.lon}"
+    private fun renderData(detailsState: DetailsState) {
+
+        when (detailsState) {
+            is DetailsState.Error -> {binding.loadingLayout.visibility = View.GONE}
+
+            DetailsState.Loading -> {binding.loadingLayout.visibility = View.VISIBLE}
+
+            is Success -> {
+                binding.loadingLayout.visibility = View.GONE
+                val weather = detailsState.weather
+                with(binding) {
+                    loadingLayout.visibility = View.GONE
+                    cityName.text = weather.city.name
+                    temperatureValue.text = weather.temperature.toString()
+                    feelsLikeValue.text = weather.feelsLike.toString()
+                    cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
+                }
+            }
+
+
         }
     }
 
@@ -64,9 +82,5 @@ class DetailsFragment : Fragment(), OnServerResponse {
             return fragment
 
         }
-    }
-
-    override fun onResponse(weatherDTO: WeatherDTO) { //отложенный вызов
-        renderData(weatherDTO)
     }
 }
