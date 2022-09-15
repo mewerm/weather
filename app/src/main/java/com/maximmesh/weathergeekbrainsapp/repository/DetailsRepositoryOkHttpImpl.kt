@@ -25,7 +25,7 @@ class DetailsRepositoryOkHttpImpl : DetailsRepository {
         Thread {
             val response = call.execute() //- для выполнения кода синхронно (здесь и сейчас)
             if (response.isSuccessful) {
-                val serverResponse = response.body!!.string()
+                val serverResponse = response.body()!!.string()
                 val weatherDTO: WeatherDTO = Gson().fromJson(serverResponse, WeatherDTO::class.java)
                 val weather = convertDtoToModel(weatherDTO)
                 callback.onResponse(weather)

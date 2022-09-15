@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentDetailsBinding
 import com.maximmesh.weathergeekbrainsapp.repository.Weather
 import com.maximmesh.weathergeekbrainsapp.utils.KEY_BUNDLE_WEATHER
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState.Success
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsViewModel
+import kotlinx.android.synthetic.main.fragment_details.*
 
 class DetailsFragment : Fragment() {
 
@@ -59,18 +61,20 @@ class DetailsFragment : Fragment() {
             DetailsState.Loading -> {binding.loadingLayout.visibility = View.VISIBLE}
 
             is Success -> {
-                binding.loadingLayout.visibility = View.GONE
                 val weather = detailsState.weather
                 with(binding) {
+                    loadingLayout.visibility = View.GONE
                     loadingLayout.visibility = View.GONE
                     cityName.text = weather.city.name
                     temperatureValue.text = weather.temperature.toString()
                     feelsLikeValue.text = weather.feelsLike.toString()
                     cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
+
+                    Glide.with(requireContext()) //загружаем картинку с помощью Glide
+                        .load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
+                        .into(headerIcon)
                 }
             }
-
-
         }
     }
 
@@ -80,7 +84,6 @@ class DetailsFragment : Fragment() {
             val fragment = DetailsFragment()
             fragment.arguments = bundle
             return fragment
-
         }
     }
 }
