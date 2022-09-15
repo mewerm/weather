@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
+import coil.load
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentDetailsBinding
 import com.maximmesh.weathergeekbrainsapp.repository.Weather
 import com.maximmesh.weathergeekbrainsapp.utils.KEY_BUNDLE_WEATHER
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState.Success
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsViewModel
-import kotlinx.android.synthetic.main.fragment_details.*
+import com.squareup.picasso.Picasso
 
 class DetailsFragment : Fragment() {
 
@@ -45,7 +45,8 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getLiveData().observe(viewLifecycleOwner
+        viewModel.getLiveData().observe(
+            viewLifecycleOwner
         ) { t -> renderData(t) }
 
         arguments?.getParcelable<Weather>(KEY_BUNDLE_WEATHER)?.let {
@@ -56,9 +57,13 @@ class DetailsFragment : Fragment() {
     private fun renderData(detailsState: DetailsState) {
 
         when (detailsState) {
-            is DetailsState.Error -> {binding.loadingLayout.visibility = View.GONE}
+            is DetailsState.Error -> {
+                binding.loadingLayout.visibility = View.GONE
+            }
 
-            DetailsState.Loading -> {binding.loadingLayout.visibility = View.VISIBLE}
+            DetailsState.Loading -> {
+                binding.loadingLayout.visibility = View.VISIBLE
+            }
 
             is Success -> {
                 val weather = detailsState.weather
@@ -70,9 +75,15 @@ class DetailsFragment : Fragment() {
                     feelsLikeValue.text = weather.feelsLike.toString()
                     cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
 
-                    Glide.with(requireContext()) //загружаем картинку с помощью Glide
+/*                    Glide.with(requireContext()) //загружаем картинку с помощью Glide
                         .load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
-                        .into(headerIcon)
+                        .into(headerIcon)*/
+
+                   /* Picasso.get()?.load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
+                        ?.into(headerIcon)   //загружаем картинку с помощью Picasso*/
+
+                    headerIcon.load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
+                        //загрузил картинку с помощью Coil
                 }
             }
         }
