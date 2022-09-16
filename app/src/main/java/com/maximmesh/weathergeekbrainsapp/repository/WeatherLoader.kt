@@ -1,7 +1,6 @@
 package com.maximmesh.weathergeekbrainsapp.repository
 
 import android.os.Looper
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.maximmesh.weathergeekbrainsapp.BuildConfig
@@ -17,7 +16,6 @@ import java.net.URL
 class WeatherLoader(private val onServerResponseListener: OnServerResponse) {
 
     fun loadWeather(lat: Double, lon: Double) {
-
 
         val urlText = "$YANDEX_DOMAIN${YANDEX_ENDPOINT}lat=$lat&lon=$lon"
         val uri = URL(urlText)

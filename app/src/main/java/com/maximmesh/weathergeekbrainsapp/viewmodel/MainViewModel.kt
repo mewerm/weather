@@ -20,7 +20,7 @@ class MainViewModel(
    private fun getWeather(isRussian:Boolean) {
         Thread {
             liveData.postValue(AppState.Loading)
-            if (true) {
+            if (true) { //TODO:временная заглушка
                 val answer = if(!isRussian) repository.getWorldWeatherFromLocalStorage() else repository.getRussianWeatherFromLocalStorage()
                 liveData.postValue(AppState.Success(answer))
             } else {

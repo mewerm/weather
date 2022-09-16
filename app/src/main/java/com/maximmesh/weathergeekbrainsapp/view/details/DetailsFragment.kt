@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import coil.load
+import coil.request.ImageRequest
 import com.maximmesh.weathergeekbrainsapp.databinding.FragmentDetailsBinding
 import com.maximmesh.weathergeekbrainsapp.repository.Weather
 import com.maximmesh.weathergeekbrainsapp.utils.KEY_BUNDLE_WEATHER
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsState.Success
 import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsViewModel
-import com.squareup.picasso.Picasso
 
 class DetailsFragment : Fragment() {
 
@@ -57,18 +61,22 @@ class DetailsFragment : Fragment() {
     private fun renderData(detailsState: DetailsState) {
 
         when (detailsState) {
-            is DetailsState.Error -> {
-                binding.loadingLayout.visibility = View.GONE
+
+           is DetailsState.Loading -> {
+                binding.loadingLayout.visibility = View.VISIBLE
             }
 
-            DetailsState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
+            is DetailsState.Error -> {
+                binding.loadingLayout.visibility = View.GONE
+                Toast.makeText(requireContext(),
+                    "Упс... Ошибка...\n${detailsState.error}",
+                    Toast.LENGTH_LONG)
+                    .show()
             }
 
             is Success -> {
                 val weather = detailsState.weather
                 with(binding) {
-                    loadingLayout.visibility = View.GONE
                     loadingLayout.visibility = View.GONE
                     cityName.text = weather.city.name
                     temperatureValue.text = weather.temperature.toString()
@@ -79,15 +87,31 @@ class DetailsFragment : Fragment() {
                         .load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
                         .into(headerIcon)*/
 
-                   /* Picasso.get()?.load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
+                    /* Picasso.get()?.load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
                         ?.into(headerIcon)   //загружаем картинку с помощью Picasso*/
 
-                    headerIcon.load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
-                        //загрузил картинку с помощью Coil
+                    headerCityIcon.load("https://freepngclipart.com/download/building/49257-building-city-silhouette-skyline-york-cityscape.png")
+                    //загрузил картинку с помощью Coil
+
+                    icon.loadSvg("https://yastatic.net/weather/i/icons/blueye/color/svg/${weather.icon}.svg")
+                    //загрузил svg картинку с помощью Coil благодаря функции loadSvg
                 }
             }
         }
     }
+
+        private fun ImageView.loadSvg(url:String){
+            val imageLoader = ImageLoader.Builder(this.context)
+                .componentRegistry { add(SvgDecoder(this@loadSvg.context)) }
+                .build()
+            val request = ImageRequest.Builder(this.context)
+                .crossfade(true)
+                .crossfade(500)
+                .data(url)
+                .target(this)
+                .build()
+            imageLoader.enqueue(request)
+        }
 
     companion object {
         @JvmStatic

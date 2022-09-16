@@ -54,7 +54,6 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
         binding.recyclerView.adapter = adapter
 
-
         val observer = { data: AppState -> renderData(data) }
         viewModel.getData().observe(viewLifecycleOwner, observer)
 
@@ -91,9 +90,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
                 binding.loadingLayout.visibility = View.GONE
                 adapter.setData(data.weatherList)
             }
-
         }
-
     }
 
     companion object {
