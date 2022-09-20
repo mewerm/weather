@@ -100,7 +100,7 @@ class DetailsFragment : Fragment() {
         }
     }
 
-        private fun ImageView.loadSvg(url:String){
+         private fun ImageView.loadSvg(url:String){
             val imageLoader = ImageLoader.Builder(this.context)
                 .componentRegistry { add(SvgDecoder(this@loadSvg.context)) }
                 .build()

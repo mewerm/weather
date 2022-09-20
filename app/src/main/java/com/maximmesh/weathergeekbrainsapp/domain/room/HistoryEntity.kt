@@ -3,7 +3,7 @@ package com.maximmesh.weathergeekbrainsapp.domain.room
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "history_entity")
+@Entity(tableName = "history_entity") //таблица
 data class HistoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long, //внутри sql это будет все равно Integer

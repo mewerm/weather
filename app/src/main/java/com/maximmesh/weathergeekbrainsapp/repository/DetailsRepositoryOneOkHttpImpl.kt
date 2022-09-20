@@ -11,7 +11,7 @@ import com.maximmesh.weathergeekbrainsapp.viewmodel.DetailsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
-class DetailsRepositoryOkHttpImpl : DetailsRepository {
+class DetailsRepositoryOneOkHttpImpl : DetailsRepositoryOne {
 
     override fun getWeatherDetails(city: City, callback: DetailsViewModel.Callback){
 
