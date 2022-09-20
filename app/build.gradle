@@ -47,6 +47,14 @@ android {
 
 dependencies {
 
+// Room
+    def roomVersion = "2.4.2"
+    apply plugin: 'kotlin-kapt'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+
+
    // implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

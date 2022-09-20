@@ -2,6 +2,7 @@ package com.maximmesh.weathergeekbrainsapp.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.maximmesh.weathergeekbrainsapp.MyApp
 import com.maximmesh.weathergeekbrainsapp.R
 import com.maximmesh.weathergeekbrainsapp.view.weatherlist.WeatherListFragment
 
@@ -15,5 +16,6 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, WeatherListFragment.newInstance())
                 .commit()
         }
+        MyApp.getHistoryDao().getAll()
     }
 }
