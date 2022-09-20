@@ -1,7 +1,7 @@
 # WeatherGeekBrainsApp
 ### Учебное приложение, для освоения новых тем
 
-> Использовано: 
+> Used by: 
 > - RecyclerView
 > - gson
 > - Yandex weather API
@@ -11,3 +11,6 @@
 > - Fragments
 > - Room
 
+> Looks like: 
+> 
+> <img src=https://user-images.githubusercontent.com/103746333/191343638-d64bbdc1-6cc3-4941-8eed-9e813e52f390.gif>
