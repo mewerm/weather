@@ -9,7 +9,6 @@ import com.maximmesh.weathergeekbrainsapp.R
 import com.maximmesh.weathergeekbrainsapp.view.weatherlist.HistoryWeatherListFragment
 import com.maximmesh.weathergeekbrainsapp.view.weatherlist.WeatherListFragment
 
-@Suppress("UNREACHABLE_CODE")
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +19,9 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, WeatherListFragment.newInstance())
                 .commit()
         }
-        MyApp.getHistoryDao().getAll()
+        Thread{
+            MyApp.getHistoryDao().getAll()
+        }.start()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

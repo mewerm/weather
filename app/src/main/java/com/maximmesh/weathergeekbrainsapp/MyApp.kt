@@ -19,7 +19,6 @@ class MyApp : Application() {
                 if (appContext != null) {
 
                         db = Room.databaseBuilder(appContext!!, WeatherAppDB::class.java, "emmm")
-                            .allowMainThreadQueries()
                             .build()
                 } else {
                     throw IllegalStateException("что-то пошло не так")
